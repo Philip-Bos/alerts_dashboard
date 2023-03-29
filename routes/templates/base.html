@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %} {% endblock %} PB Algo Alert Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
+    />
+    <style>
+      th,
+      td {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border: 1px solid black;
+        text-align: left;
+      }
+      .user-div {
+        border: 1px solid black;
+        padding: 20px;
+        border-radius: 10px;
+      }
+      table {
+        width: 100%;
+      }
+      .cancel{
+        background:rgba(255, 0, 0, 0.2);
+      }
+      .long{
+        background:rgba(0, 255, 0, 0.3);
+      }
+      .logo{
+        max-width: 200px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}"><img class="logo" src="{{url_for('static', filename='pb.png')}}" /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/guide">Guide</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/payloads">Generate Payloads</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+<div class="container mt-4">
+    {% with errors = get_flashed_messages(category_filter=["error"]) %}
+      {% if errors %}
+        <div class="alert alert-danger" role="alert">
+          {%-for msg in errors %}
+          {{ msg }}
+          {% endfor -%}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% with success = get_flashed_messages(category_filter=["success"]) %}
+      {% if success %}
+        <div class="alert alert-success" role="alert">
+          {%-for msg in success %}
+            {{ msg }}
+          {% endfor -%}
+        </div>
+      {% endif %}
+    {% endwith %}
+</div>
+
+    <div class="content">{% block content %} {% endblock %}</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <div id="footer" class="container">
+      {% block footer %}
+
+  <div class="user-div mt-4 mb-4">
+    <div class="row align-items-start">
+    <div class="col">
+    <h4>PB Algo Alert Management</h4>
+    {%if session.username%}
+  <p>Logged in as {{session.username}}</p>
+  <form action="/logout">
+  <button type="submit" class="btn btn-danger">log out</button>
+  </form>
+  {%endif%}
+  {% if not session.username%}
+  <p>Log in to see your alerts and create payloads. <br>Read the <a href="/guide">guide</a> to learn how to log in.</p>
+  <form method="post" action="/" class="row g-3 mb-4">
+    <input class="form-control" type="text", name="username", placeholder = "TradingView Username"></input>
+    <input class="form-control" type="text", name="session_id", placeholder = "Session ID"></input>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {%endif%}
+  </div>
+  <div class="col">
+    {% if session.username%}
+    {% if not session.kite%}
+    <h4>Log in to your Services</h4>
+  <p>Zerodha</p>
+  <form method="post" action="/connect_kite" class="row g-3 mb-4">
+    <input class="form-control" type="text", name="key", placeholder = "Kite API Key"></input>
+    <input class="form-control" type="text", name="secret", placeholder = "Kite API Secret"></input>
+    <button type="submit" class="btn btn-primary">Log In</button>
+  </form>
+  {%endif%}
+  {% if session.kite %}
+  <h4>Connected services:</h4>
+  <b>Zerodha/Kite:</b>
+
+  <p>Logged in as: <b>{{session.kite.user_shortname}} / {{session.kite.user_id}}</b><br>Access token:<b> {{session.kite.access_token}}</b><br>Connected since: <b>{{session.kite.login_time}}</b></p>
+  <form action="/logout_kite">
+  <button type="submit" class="btn btn-danger">log out</button>
+  </form>
+  {%endif%}
+  {%endif%}
+  </div>
+  </div>
+  </div>
+
+</div>
+</div>
+  </ol>
+</div>
+{%endblock%}
+    </div>
+  </body>
+</html>

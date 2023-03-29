@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-4">
+  {%if session.username%}
+  <h2 class="mt-4">Active alerts:</h2>
+  {%if alerts%}
+  <table >
+    <th>ID</th>
+    <th>Name</th>
+    <th>Symbol</th>
+    <th>Active?</th>
+    <th>Payload</th>
+    <th>Info</th>
+    <th></th>
+
+    {%for alert in alerts%}
+    <tr>
+      <td>{{alert.id}}</td>
+      {%if alert.name == "Cancel Alert"%}
+      <td class="cancel">{{alert.name}}</td>
+      {%else%}
+      <td class="long">{{alert.name}}</td>
+      {%endif%}
+      <td>{{alert.sym}}</td>
+      <td>{{alert.active}}</td>
+
+      <td>{{alert.desc}}</td>
+      <td>{{alert.gen_alert_data.primitive_alert}}</td>
+      <td>
+        <form action="/delete/{{alert.id}}" method="post">
+          <button type="submit" class="btn btn-danger">Cancel</button>
+        </form>
+      </td>
+
+    </tr>
+    {%endfor%}
+
+</table>
+
+  {%endif%} {%if not alerts%}
+  <p>Currently no alerts to display.</p>
+  {%endif%}
+      <form method="post" action="/test_alert">
+        <button class="btn btn-primary mt-4 mb-4">Place a test alert now</button>
+      </form>
+  </div>
+</div>
+{%endif%} {% endblock %}

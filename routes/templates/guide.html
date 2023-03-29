@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-4">
+  <h2>Setup guide</h2>
+  <p class="mt-4">In this guide I'll explain how to set everything up.</p>
+  <ol>
+    <li>
+      <p class="mt-4">
+        In order to get started we need to make sure we are establishing a good
+        connection with TradingView. For this you need to log in to your
+        TradingView account if you aren't already. Once logged in, you need to
+        find you "Session ID". This video should illustrate well where you can
+        find this:
+      </p>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/MYvnMivj2w0"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+      <p>Copy your session id and move on to the next step.</p>
+    </li>
+    <li>
+      <p class="mt-4">
+        Now we're ready to generate a payload. For this, first log-in with the
+        your TradingView Username and the session_id we've just recovered.
+      </p>
+      {% if not session.username%}
+  <p>Log in to see your alerts and create payloads. <br>Read the <a href="/guide">guide</a> to learn how to log in.</p>
+  <form method="post" action="/" class="row g-3 mb-4">
+    <input class="form-control" type="text", name="username", placeholder = "TradingView Username"></input>
+    <input class="form-control" type="text", name="session_id", placeholder = "Session ID"></input>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {%endif%}
+  {%if session.username%}
+  <p style="color:green;">
+    Great, you're already logged in!
+  </p>
+  {%endif%}
+    </li>
+    <li>
+      <p class="mt-4">
+        Now have a look at the <a href="/" target="blank">start page</a> to see your active alerts.
+      </p>
+    </li>
+
+  </ol>
+  {% endblock %}
+</div>

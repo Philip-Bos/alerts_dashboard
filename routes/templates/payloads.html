@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-4">
+  {% if session.username %}
+  <h1 class="mb-4">{% block title %} Your custom payload: {% endblock %}</h1>
+  <div class="bg-dark text-light p-2 rounded mt-4">
+    <code>
+      <pre class="indent">
+
+{
+    "username"      : "{{ session.username }}",
+    "session_id"    : "{{ session.session_id }}",
+    "webhook_url"   : "{{session.ref}}create_alert",
+    "symbol"        : {{ '{{' }} exchange {{ '}}' }} : {{ '{{' }} ticker {{ '}}'}},
+    "alert_name"    : "Alert on {{ '{{' }} ticker {{ '}}' }}",
+    "alert_mssg"    : "{{ '{' }} "ticker" : {{ '{{' }} ticker {{ '}}' }},
+    "alert_lvl"     : {{ '{{' }} plot_0 {{ '}}' }}",
+    "cancel_title"  : {{ '{{' }} plot_1 {{ '}}' }},
+    "cancel_mssg"   : "{{ '{' }} "ticker" : {{ '{{' }} ticker {{ '}}' }}{{'}'}}",
+    "cancel_lvl"    : {{ '{{' }} plot_3 {{ '}}' }}
+}</pre
+      >
+    </code>
+  </div>
+  {%endif%} {% endblock %}
+</div>
