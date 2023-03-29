@@ -8,6 +8,7 @@ from functions.list_alerts import list_alerts
 from functions.delete_alert import delete_alert
 
 app = Flask(__name__)
+app.secret_key = "any random string"
 app.register_blueprint(order_bp)
 app.register_blueprint(create_alert_bp)
 app.register_blueprint(create_payloads_bp)
